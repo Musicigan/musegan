@@ -20,6 +20,7 @@ from config import *
 # GAN
 ###########################################################################
 
+
 class GAN(object):
     def __init__(self, sess, config, model):
         print ('{:=^120}'.format(' Building MidiNet '))
@@ -209,11 +210,12 @@ class GAN(object):
         if is_save:
             np.save(os.path.join(gen_dir, 'gen.npy'), result)
 
-        return result, eval_result
+        return result,  result
 
 ###########################################################################
 # MuseGAN
 ###########################################################################
+
 
 class MuseGAN(object):
     def __init__(self, sess, config, model):
@@ -245,8 +247,6 @@ class MuseGAN(object):
 
         print('*initializing variables...')
 
-
-
         # init metrics amd loss collection
         self.metrics = Metrics(eval_map=self.config.eval_map,
                     inter_pair=self.config.inter_pair,
@@ -274,8 +274,6 @@ class MuseGAN(object):
 
         for file_path in glob.glob("./*.py"):
             copyfile(file_path, os.path.join(path_src, os.path.basename(file_path)))
-
-
 
     def train(self, input_data):
 
@@ -327,7 +325,7 @@ class MuseGAN(object):
                     self.metrics.collect(score_matrix, score_pair)
 
                 # collect loss
-                self.metrics.collect_loss({'d':d_loss_eval, 'g':g_loss_eval}) # loss
+                self.metrics.collect_loss({'d': d_loss_eval, 'g': g_loss_eval})  # loss
 
                 # print and save batch info
                 if self.config.print_batch:
@@ -380,7 +378,7 @@ class MuseGAN(object):
     def load(self, checkpoint_dir, component='all'):
 
         if component == 'all':
-            saver_names = ['midinet'] # ['midinet', 'G', 'D', 'invG']
+            saver_names = ['midinet', 'G', 'D']  # ['midinet', 'G', 'D', 'invG']
         elif component == 'GD':
             saver_names = ['G', 'D']
 

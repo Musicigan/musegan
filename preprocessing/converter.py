@@ -4,6 +4,7 @@ import json
 import errno
 import argparse
 import warnings
+
 from pypianoroll import Multitrack, Track
 from config import settings
 import pretty_midi
@@ -15,8 +16,8 @@ warnings.filterwarnings('ignore')
 def parse_args():
     """Return parsed command line arguments"""
     parser = argparse.ArgumentParser()
-    parser.add_argument('datasets', nargs='+', choices=('lpd', 'lpd-5'),
-                        help="convert to normal or merged multi-track "
+    parser.add_argument('datasets', nargs='+', choices=('lpd-5'),   # 'lpd',
+                        default='lpd-5', help="convert to normal or merged multi-track "
                              "piano-rolls or both ('lpd', 'lpd-5')")
     args = parser.parse_args()
     return args.datasets
@@ -42,6 +43,7 @@ def get_midi_path(root):
             if filename.endswith('.mid'):
                 filepaths.append(os.path.join(dirpath, filename))
     return filepaths
+
 
 def get_midi_info(pm):
     """Return useful information from a pretty_midi.PrettyMIDI instance"""
@@ -95,6 +97,7 @@ def get_merged(multitrack):
             tracks.append(Track(None, program_dict[key], key=='Drums', key))
     return Multitrack(None, tracks, multitrack.tempo, multitrack.downbeat,
                       multitrack.beat_resolution, multitrack.name)
+
 
 def converter(filepath, datasets, midi_dict):
     """Save a multi-track piano-roll converted from a MIDI file to target

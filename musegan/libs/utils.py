@@ -20,11 +20,13 @@ import glob
 
 get_stddev = lambda x, k_h, k_w: 1/math.sqrt(k_w*k_h*x.get_shape()[-1])
 
+
 def imread(path, is_grayscale=False):
     if (is_grayscale):
         return scipy.misc.imread(path, flatten=True).astype(np.float)
     else:
         return scipy.misc.imread(path).astype(np.float)
+
 
 def imsave(images, size, path, boarder=3, name='sample', type_=0):
     '''
@@ -39,6 +41,7 @@ def imsave(images, size, path, boarder=3, name='sample', type_=0):
             os.makedirs(save_dir)
         for idx in range(images.shape[0]):
             scipy.misc.imsave(os.path.join(save_dir, name+'_%d.png'%idx), images[idx, :, :, :])
+
 
 def merge(images, size, boarder=3):
     h, w = images.shape[1], images.shape[2]
@@ -57,6 +60,7 @@ def merge(images, size, boarder=3):
         img[j*(h+3)-3:j*(h+3),:] = [1.0, 1.0, 1.0]
     return img
 
+
 def to_image_np(bars):
     colormap = np.array([[1., 0., 0.],
                          [0., 1., 0.],
@@ -69,8 +73,10 @@ def to_image_np(bars):
     #     recolored_bars = recolored_bars + bars[..., track_idx][:, :, :, None]*colormap[track_idx][None, None, None, :]
     return np.flip(np.transpose(recolored_bars, (0, 2, 1, 3)), axis=1)
 
+
 def save_bars(bars, size, file_path, name='sample', type_=0):
     return imsave(to_image_np(bars), size, file_path, name=name, type_=type_)
+
 
 def save_midis(bars, file_path):
     padded_bars = np.concatenate((np.zeros((bars.shape[0], bars.shape[1], 24, bars.shape[3])), bars, np.zeros((bars.shape[0], bars.shape[1], 20, bars.shape[3]))), axis=2)
@@ -81,12 +87,15 @@ def save_midis(bars, file_path):
     for ch_idx in range(padded_bars.shape[3]):
         images_with_pause_list.append(images_with_pause[:,:,:,ch_idx].reshape(images_with_pause.shape[0],  \
                                                         images_with_pause.shape[1], images_with_pause.shape[2]))
-    write_midi.write_piano_rolls_to_midi(images_with_pause_list, program_nums=[33,0,25,49,0], is_drum=[False, True, False, False, False],  \
+    # print 'the dimension of the pause_list' + str(np.asarray(images_with_pause_list).shape)
+    write_midi.write_piano_rolls_to_midi(images_with_pause_list, program_nums=[33, 0, 25, 49, 0], is_drum=[False, True, False, False, False],  \
                                                             filename=file_path, tempo=80.0)
+
 
 def transform(image, npx=64, resize_w=64):
     # npx : # of pixels width/height of image
     return np.array(image)/127.5 - 1.
+
 
 def make_gif(imgs_filter, gen_dir='./', stop__frame_num=10):
     img_list = glob.glob(imgs_filter)
@@ -143,6 +152,7 @@ def lerp(a, b, steps):
         step_list.append(a + step_vec*idx)
     return step_list
 
+
 def slerp(a, b, steps):
     aa =  np.squeeze(a/np.linalg.norm(a))
     bb =  np.squeeze(b/np.linalg.norm(b))
@@ -158,10 +168,11 @@ def slerp(a, b, steps):
         step_list.append(tmp)
     return step_list
 
+
 def get_sample_shape(sample_size):
-    if sample_size >= 64  and sample_size %8 == 0:
+    if sample_size >= 64 and sample_size %8 == 0:
         return [8, sample_size//8]
-    elif sample_size >= 48  and sample_size %6 == 0:
+    elif sample_size >= 48 and sample_size %6 == 0:
         return [6,sample_size//6]
     elif sample_size >= 24 and sample_size %4 == 0:
         return [4, sample_size/4]

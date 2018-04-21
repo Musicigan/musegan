@@ -16,6 +16,7 @@ from config import *
 
 #assign GPU
 
+np_dir = '/home/ashar/Documents/ece6254/project/data/musegan/'
 
 if __name__ == '__main__':
 
@@ -29,14 +30,14 @@ if __name__ == '__main__':
 
     with tf.Session(config=config) as sess:
 
-        path_x_train_phr =  'tra_X_phrase_all' # (50266, 384, 84, 5)
+        path_x_train_phr = np_dir + 'tra_phr.npy'  # (50266, 384, 84, 5)
 
         # Temporal
             # hybrid
         t_config.exp_name = 'exps/temporal_hybrid'
         model = TemporalHybrid(TemporalHybridConfig)
         input_data = InputDataTemporalHybrid(model)
-        input_data.add_data_sa(path_x_train_phr, 'train')
+        input_data.add_data(path_x_train_phr, 'test')
 
         musegan = MuseGAN(sess, t_config, model)
         musegan.train(input_data)

@@ -13,7 +13,8 @@ class InputData:
         self.x = dict()
 
     def add_data(self, path_new, key='train'):
-        self.x[key] = np.load(path_new)
+        zxc = np.load(path_new)
+        self.x[key] = zxc  # [..., 3]
         print('data size:', self.x[key].shape)
 
     def add_data_sa(self, path_new, key='train'):
@@ -128,6 +129,7 @@ class InputDataTemporalHybrid(InputData):
 
         return feed_dict
 
+
 class InputDataTemporalJamming(InputData):
     def gen_z_dict(self, data_size=None, z=None):
         batch_size = self.batch_size if data_size is None else data_size
@@ -142,6 +144,7 @@ class InputDataTemporalJamming(InputData):
 
         return feed_dict
 
+
 class InputDataTemporalComposer(InputData):
     def gen_z_dict(self, idx=0, data_size=None, z=None):
         batch_size = self.batch_size if data_size is None else data_size
@@ -154,6 +157,7 @@ class InputDataTemporalComposer(InputData):
         feed_dict = {self.model.z_inter_v: self.z['z_inter_v'], self.model.z_inter_i: self.z['z_inter_i']}
 
         return feed_dict
+
 
 class InputDataRNNComposer(InputData):
     def gen_feed_dict(self, idx=0, data_size=None, z=None):

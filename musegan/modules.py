@@ -7,6 +7,7 @@ import numpy as np
 from musegan.libs.ops import *
 from musegan.libs.utils import *
 
+
 class PhraseGenerator(object):
     def __init__(self, name='PG', output_dim=1, is_bn=True):
         self.output_dim = output_dim
@@ -23,6 +24,7 @@ class PhraseGenerator(object):
             h1 = tf.transpose(tf.squeeze(h1, axis=2), [0, 2, 1])
 
         return h1
+
 
 class BarGenerator(object):
     def __init__(self, name='BG', output_dim=1, is_bn=True):

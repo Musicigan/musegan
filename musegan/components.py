@@ -132,6 +132,7 @@ class Nowbar(Model):
 
             self.d_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope.name)
 
+
 class NowbarHybrid(Nowbar):
     def __init__(self, config):
         with tf.variable_scope('NowbarHybrid'):
@@ -157,6 +158,7 @@ class NowbarHybrid(Nowbar):
 
             self._build_graph(config)
 
+
 class NowbarJamming(Nowbar):
     def __init__(self, config):
         with tf.variable_scope('NowbarJamming'):
@@ -179,6 +181,7 @@ class NowbarJamming(Nowbar):
 
             self._build_graph(config)
 
+
 class NowbarComposer(Nowbar):
     def __init__(self, config):
         with tf.variable_scope('NowbarComposer'):
@@ -200,6 +203,7 @@ class NowbarComposer(Nowbar):
 #######################################################################################################################
 # Temporal
 #######################################################################################################################
+
 
 class Temporal(Model):
     def _build_graph(self, config):
@@ -317,6 +321,7 @@ class Temporal(Model):
 
             self.d_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope.name)
 
+
 class TemporalHybrid(Temporal):
     def __init__(self, config):
         with tf.variable_scope('TemporalHybrid'):
@@ -368,6 +373,7 @@ class TemporalHybrid(Temporal):
                 tz_intra_v_hat = PG(tz_intra_v, reuse=True)
                 self.z_intra_v_hat.append(tz_intra_v_hat)
 
+
 class TemporalJamming(Temporal):
     def __init__(self, config):
         with tf.variable_scope('TemporalJamming'):
@@ -409,6 +415,7 @@ class TemporalJamming(Temporal):
                 tz_intra_v = tf.squeeze(tf.slice(self.z_intra_v, [0, 0, tidx], [-1, -1, 1]), squeeze_dims=2)
                 tz_intra_v_hat = PG(tz_intra_v, reuse=tidx>0)
                 self.z_intra_v_hat.append(tz_intra_v_hat)
+
 
 class TemporalComposer(Temporal):
     def __init__(self, config):
@@ -452,6 +459,7 @@ class TemporalComposer(Temporal):
 # RNN
 #######################################################################################################################
 
+
 class RNNComposer(Temporal):
     def __init__(self, config):
         with tf.variable_scope('RNNComposer'):
@@ -477,7 +485,6 @@ class RNNComposer(Temporal):
                     self.z_final[bidx][tidx] = tz_inter
 
             self._build_graph(config)
-
 
     def _build_phrase_generator_rnn(self, config):
         with tf.variable_scope('G') as scope:

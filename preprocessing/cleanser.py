@@ -5,14 +5,16 @@ import argparse
 from shutil import copyfile
 from config import settings
 
+
 def parse_args():
     """Return parsed command line arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument('datasets', nargs='+', choices=('lpd', 'lpd-5', 'lmd'),
-                        help="datasets to be cleansed ('lpd', 'lpd-5' or "
+                        default='lpd-5', help="datasets to be cleansed ('lpd', 'lpd-5' or "
                              "'lmd')")
     args = parser.parse_args()
     return args.datasets
+
 
 def make_sure_path_exists(path):
     """Create all intermediate-level directories if the given path does not
@@ -22,6 +24,7 @@ def make_sure_path_exists(path):
     except OSError as exception:
         if exception.errno != errno.EEXIST:
             raise
+
 
 def midi_filter(midi_info):
     """Return True for qualified midi files and False for unwanted ones"""
@@ -33,14 +36,18 @@ def midi_filter(midi_info):
         return False
     return True
 
+
 def msd_id_to_dirs(msd_id):
     """Given an MSD ID, generate the path prefix.
     E.g. TRABCD12345678 -> A/B/C/TRABCD12345678"""
     return os.path.join(msd_id[2], msd_id[3], msd_id[4], msd_id)
 
+
 def main():
     """Main function of teh cleanser"""
     datasets = parse_args()
+
+    print 'Whats UP!'
 
     with open(settings['match_scores']) as infile:
         match_score_dict = json.load(infile)

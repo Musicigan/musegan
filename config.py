@@ -29,16 +29,17 @@ def get_colormap():
 # Training
 ###########################################################################
 
+
 class TrainingConfig:
     is_eval = True
     batch_size = 64
-    epoch = 20
+    epoch = 10
     iter_to_save = 100
     sample_size = 64
     print_batch = True
     drum_filter = np.tile([1,0.3,0,0,0,0.3], 16)
     scale_mask = [1., 0., 1., 0., 1., 1., 0., 1., 0., 1., 0., 1.]
-    inter_pair = [(0,2), (0,3), (0,4), (2,3), (2,4), (3,4)]
+    inter_pair = [(0, 2), (0, 3), (0, 4), (2, 3), (2, 4), (3, 4)]
     track_names = TRACK_NAMES
     track_dim = len(track_names)
     eval_map = np.array([
@@ -52,7 +53,7 @@ class TrainingConfig:
                 ])
 
     exp_name = 'exp'
-    gpu_num = '1'
+    gpu_num = '0'
 
 
 ###########################################################################
@@ -96,12 +97,14 @@ class OneBarHybridConfig(ModelConfig):
     z_intra_dim = 64
     output_dim = 1
 
+
 class OneBarJammingConfig(ModelConfig):
     track_names = TRACK_NAMES
     track_dim = 5
     acc_idx = None
     z_intra_dim = 128
     output_dim = 1
+
 
 class OneBarComposerConfig(ModelConfig):
     track_names = ['All']
@@ -112,6 +115,7 @@ class OneBarComposerConfig(ModelConfig):
 
 # nowbar
 
+
 class NowBarHybridConfig(ModelConfig):
     track_names = TRACK_NAMES
     track_dim = 5
@@ -120,6 +124,7 @@ class NowBarHybridConfig(ModelConfig):
     z_intra_dim = 64
     output_dim = 1
 
+
 class NowBarJammingConfig(ModelConfig):
     track_names = TRACK_NAMES
     track_dim = 5
@@ -127,12 +132,14 @@ class NowBarJammingConfig(ModelConfig):
     z_intra_dim = 128
     output_dim = 1
 
+
 class NowBarComposerConfig(ModelConfig):
     track_names = ['All']
     track_dim = 1
     acc_idx = 4
     z_inter_dim = 128
     output_dim = 5
+
 
 # Temporal
 class TemporalHybridConfig(ModelConfig):
@@ -144,12 +151,15 @@ class TemporalHybridConfig(ModelConfig):
     acc_idx = None
     output_dim = 1
 
+
 class TemporalJammingConfig(ModelConfig):
     track_names = TRACK_NAMES
     track_dim = 5
     output_bar = 4
     z_intra_dim = 64
+    acc_idx = None
     output_dim = 1
+
 
 class TemporalComposerConfig(ModelConfig):
     track_names = ['All']
@@ -158,6 +168,7 @@ class TemporalComposerConfig(ModelConfig):
     z_inter_dim = 64
     acc_idx = None
     output_dim = 5
+
 
 class NowBarTemporalHybridConfig(ModelConfig):
     track_names = TRACK_NAMES
