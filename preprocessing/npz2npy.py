@@ -4,11 +4,19 @@ import scipy.sparse
 import numpy as np
 import pickle
 
+LAST_BAR_MODE = 'remove'
 
 def csc_to_array(csc, track_id):
     print csc['pianoroll_%d_csc_shape' % track_id]
     return scipy.sparse.csc_matrix((csc['pianoroll_%d_csc_data' % track_id], csc['pianoroll_%d_csc_indices' % track_id],
                                     csc['pianoroll_%d_csc_indptr' % track_id]), shape=csc['pianoroll_%d_csc_shape' % track_id]).toarray()
+
+
+def get_bar_piano_roll(piano_roll, bar_size=96, notespan=84):
+    if int(piano_roll.shape[0] % bar_size) is not 0:
+        piano_roll = np.delete(piano_roll,  np.s_[-int(piano_roll.shape[0] % bar_size):], axis=0)
+    piano_roll = piano_roll.reshape(-1, bar_size, notespan)
+    return piano_roll
 
 # path = '/home/ashar/Documents/ece6254/project/data/lmd_genre/lpd_5/cleansed/'
 path = '/media/ashar/Data/lmd_genre/lpd_5/cleansed'

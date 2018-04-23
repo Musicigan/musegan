@@ -12,6 +12,10 @@ class InputData:
         self.z = dict()
         self.x = dict()
 
+    def add_loaded_data(self, npy_array, key='train' ):
+        self.x[key] = npy_array
+        print('data size:', self.x[key].shape)
+
     def add_data(self, path_new, key='train'):
         zxc = np.load(path_new)
         self.x[key] = zxc  # [..., 3]

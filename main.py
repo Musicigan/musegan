@@ -13,10 +13,12 @@ from musegan.core import *
 from musegan.components import *
 from input_data import *
 from config import *
+from cleansed_preprocess import data_loader
+genre_binarylist = [00, 01, 10, 11]
 
 #assign GPU
 
-np_dir = '/home/ashar/Documents/ece6254/project/data/musegan/'
+np_dir = '/media/ashar/Data/lmd_genre/lpd_5/numpy_musegan_phr/'
 
 if __name__ == '__main__':
 
@@ -30,14 +32,14 @@ if __name__ == '__main__':
 
     with tf.Session(config=config) as sess:
 
-        path_x_train_phr = np_dir + 'tra_phr.npy'  # (50266, 384, 84, 5)
-
+        # path_x_train_phr = np_dir + 'tra_phr.npy'  # (50266, 384, 84, 5)
+        full_X = data_loader(np_dir, genre_binarylist)
         # Temporal
             # hybrid
-        t_config.exp_name = 'exps/temporal_hybrid'
+        t_config.exp_name = 'exps/temporal_hybrid_genre'
         model = TemporalHybrid(TemporalHybridConfig)
         input_data = InputDataTemporalHybrid(model)
-        input_data.add_data(path_x_train_phr, 'test')
+        input_data.add_loaded_data(full_X, 'train')
 
         musegan = MuseGAN(sess, t_config, model)
         musegan.train(input_data)

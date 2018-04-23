@@ -148,8 +148,8 @@ class Metrics(object):
         num_short_notes = 0
 
         for p in range(bar.shape[1]):
-            st_idx = (bar_search[:,p] > 0).nonzero()[0]
-            ed_idx = (bar_search[:,p] < 0).nonzero()[0]
+            st_idx = (bar_search[:, p] > 0).nonzero()[0]
+            ed_idx = (bar_search[:, p] < 0).nonzero()[0]
             for idx in range(len(st_idx)):
                 tmp_len = ed_idx[idx] - st_idx[idx]
                 if(tmp_len >=  threshold):

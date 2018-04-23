@@ -31,7 +31,7 @@ def get_colormap():
 
 
 class TrainingConfig:
-    is_eval = True
+    is_eval = False
     batch_size = 64
     epoch = 10
     iter_to_save = 100

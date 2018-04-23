@@ -1,3 +1,8 @@
+# File generates lookup Csv from the available cleansed midi files
+
+# Also Functionality to extract only genre-based files from the lakh-midi matched Dataset.
+
+
 import os
 import glob
 import pandas as pd
@@ -10,6 +15,8 @@ import shutil
 path = '/home/ashar/Documents/ece6254/project/data/lpd_5/cleansed/'
 genre_matched_path = '/home/ashar/Documents/ece6254/project/data/lmd_matched_genre/'
 genremap_dir = '/home/ashar/Downloads/'
+
+genre_binary_map = {'Country': '00', 'Pop_Rock': '01', 'Electronic': '10', 'RnB': '10', 'Jazz': '11', 'Blues': '11'}
 
 matched_tracklist_json = []
 json_file = open(genremap_dir + 'match_scores.json').read()
@@ -25,7 +32,7 @@ genre_tracklist = df_genre.TrackID.T.tolist()
 matched_tracks = list(set(genre_tracklist).intersection(matched_tracklist_json))
 print len(matched_tracks)
 
-df_filepath = pd.DataFrame(columns = ['TrackID', 'npzPath', 'Genre'])
+df_filepath = pd.DataFrame(columns=['TrackID', 'NpzPath', 'Genre', 'GenreBinary'])
 df_track_idx = df_genre.set_index("TrackID", drop=False)
 
 
@@ -43,12 +50,18 @@ for file_1 in os.listdir(path):
             for track in os.listdir(path_3):
                 if any(track in s for s in matched_tracks):
                     for name in glob.glob(os.path.join(full_path, track, '*.npz')):
-                        df_filepath = df_filepath.append({'TrackID': track, 'npzPath': name, 'Genre': df_track_idx.loc[track, "Genre"]}, ignore_index=True)
-
+                        try:
+                            df_filepath = df_filepath.append({'TrackID': track, 'NpzPath': name,
+                                                          'Genre': df_track_idx.loc[track, "Genre"],
+                                                          'GenreBinary': genre_binary_map[df_track_idx.loc[track, "Genre"]]}, ignore_index=True)
+                        except KeyError:
+                            print 'This Genre is not Required!'
                     print 'Found the track!'
 cross_check = 1
+                    # Store only the relevant data
                     # shutil.copytree(os.path.join(full_path, track) , os.path.join(new_final_path, track))
 
+df_filepath.to_csv(genremap_dir + 'cleansed_genremap.csv')
 
 
 #
